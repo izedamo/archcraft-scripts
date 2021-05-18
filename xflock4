@@ -1,0 +1,4 @@
+#!/usr/bin/bash
+
+# Run when lid is getting closed
+betterlockscreen --lock
