@@ -124,7 +124,7 @@ _clean_archiso() {
 _clean_offline_packages() {
 
     local _packages_to_remove=( 
-    ac-installer
+    archcraft-installer
     calamares-config
     calamares
     archinstall
