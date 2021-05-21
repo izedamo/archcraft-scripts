@@ -13,9 +13,9 @@ fi
 # notify
 notify_user () {
 	if [[ "$style" == "Light" ]]; then
-		dunstify -u low --replace=699 -i /usr/share/icons/Hybrid_Light/actions/24/view-preview.svg "Saved in ~/Pictures."
+		dunstify -u low --replace=699 -i /usr/share/icons/Archcraft/actions/24/view-preview.svg "Saved in ~/Pictures."
 	else
-		dunstify -u low --replace=699 -i /usr/share/icons/Hybrid/actions/24/view-preview.svg "Saved in ~/Pictures."
+		dunstify -u low --replace=699 -i /usr/share/icons/Archcraft-Dark/actions/24/view-preview.svg "Saved in ~/Pictures."
 	fi
 }
 
@@ -23,10 +23,10 @@ notify_user () {
 countdown () {
 	for sec in `seq $1 -1 1`; do
 		if [[ "$style" == "Light" ]]; then
-			dunstify -t 1000 --replace=699 -i /usr/share/icons/Hybrid_Light/actions/24/chronometer.svg "Taking shot in : $sec"
+			dunstify -t 1000 --replace=699 -i /usr/share/icons/Archcraft/actions/24/chronometer.svg "Taking shot in : $sec"
 			sleep 1
 		else
-			dunstify -t 1000 --replace=699 -i /usr/share/icons/Hybrid/actions/24/chronometer.svg "Taking shot in : $sec"
+			dunstify -t 1000 --replace=699 -i /usr/share/icons/Archcraft-Dark/actions/24/chronometer.svg "Taking shot in : $sec"
 			sleep 1
 		fi
 	done
