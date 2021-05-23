@@ -6,8 +6,8 @@
 dir="$HOME/.config/openbox/styles"
 
 # Lib
-if ! . "/usr/lib/archlabs/common/al-include.cfg" 2>/dev/null; then
-    echo $"Error: Failed to source /usr/lib/archlabs/common/al-include.cfg" >&2 ; exit 1
+if ! . "/usr/lib/archcraft/common/ac-include.cfg" 2>/dev/null; then
+    echo $"Error: Failed to source /usr/lib/archcraft/common/ac-include.cfg" >&2 ; exit 1
 fi
 
 # Styles
