@@ -1,0 +1,196 @@
+#!/bin/bash
+
+## Created by Aditya Shakya <adi1090x@gmail.com> for Archcraft OS
+
+# ANSI Colors (FG & BG)
+RED="$(printf '\033[31m')"  GREEN="$(printf '\033[32m')"  ORANGE="$(printf '\033[33m')"  BLUE="$(printf '\033[34m')"
+MAGENTA="$(printf '\033[35m')"  CYAN="$(printf '\033[36m')"  WHITE="$(printf '\033[37m')" BLACK="$(printf '\033[30m')"
+REDBG="$(printf '\033[41m')"  GREENBG="$(printf '\033[42m')"  ORANGEBG="$(printf '\033[43m')"  BLUEBG="$(printf '\033[44m')"
+MAGENTABG="$(printf '\033[45m')"  CYANBG="$(printf '\033[46m')"  WHITEBG="$(printf '\033[47m')" BLACKBG="$(printf '\033[40m')"
+
+# Update configs in user's home directory
+_tstamp=`date +"%Y.%m.%d-%H.%M"`
+_bdir="$HOME/.ac-backup-${_tstamp}"
+_ndir="$HOME/.new-config-${_tstamp}"
+_src="/etc/skel"
+_dstn="$HOME"
+
+## Reset terminal colors
+reset_color() {
+	tput sgr0   # reset attributes
+	tput op     # reset color
+    return
+}
+
+# Make backup directory
+create_bdir() {
+	if [[ ! -d "${_bdir}" ]]; then
+		mkdir -p ${_bdir}/.config
+	fi
+}
+
+# Make new config directory
+create_ndir() {
+	if [[ ! -d "${_ndir}" ]]; then
+		mkdir -p ${_ndir}/.config
+	fi
+}
+
+# Ask user what to do with configs
+ask_user() {
+	echo -e ${BLUEBG}"${BLACK}\n[*] Configurations Installer `reset_color`\n"
+	cat <<- _MENU_
+		${GREEN}[1] ${GREEN}Install New Configurations `reset_color`
+		${RED}[2] ${RED}Keep My Current Configurations `reset_color`
+		
+	_MENU_
+	read -p ${BLUEBG}${BLACK}"[?] Select what to do : `reset_color` " ANS
+	
+	if [[ -n "$ANS" ]]; then
+		if [[ "$ANS" == "1" ]]; then
+			_install_new="true"
+			echo -e ${CYAN}"\n[*] Installing New Configurations...\n${ORANGE}[!] Remember, This process will set everything back to default.\n${CYAN}[*] Your current config files will be backed up inside ${MAGENTA}'${_bdir}' `reset_color`\n"
+		elif [[ "$ANS" == "2" ]]; then
+			_install_new="false"
+			echo -e ${CYAN}"\n[*] Alright, Keeping your current configurations...\n${ORANGE}[!] In that case, You have to manually update your configs.\n${CYAN}[*] New config files are installed inside ${MAGENTA}'${_ndir}' `reset_color`\n"
+		else
+			_install_new="none"
+			echo -e ${ORANGE}"\n[!] Invalid Answer, Keeping your current configs.\n[!] You have to manually update your configs from '/etc/skel'.`reset_color`\n"
+		fi
+	else
+		_install_new="none"
+		echo -e ${ORANGE}"\n[!] Invalid Answer, Keeping your current configs.\n[!] You have to manually update your configs from '/etc/skel'.`reset_color`\n"
+	fi
+}
+
+# Update basic configs
+update_skel() {
+	local _skel_1
+	local _skel_2
+	
+	_skel_1=('.gtkrc-2.0' '.vimrc')
+	_skel_2=('gtk-3.0' 'Kvantum' 'leafpad' 'midori' 'networkmanager-dmenu' 'pyroom' 'qt5ct' 'ranger' 'mimeapps.list')
+	
+	if [[ "$_install_new" == "true" ]]; then
+		create_bdir
+		for _sfile_1 in "${_skel_1[@]}"; do
+			# create backup in backup dir
+			mv -f ${_dstn}/${_sfile_1} ${_bdir}/
+			# install new config file
+			cp -rf ${_src}/${_sfile_1} ${_dstn}/
+		done
+		for _sfile_2 in "${_skel_2[@]}"; do
+			# create backup in backup dir
+			mv -f ${_dstn}/.config/${_sfile_2} ${_bdir}/.config/
+			# install new config file
+			cp -rf ${_src}/.config/${_sfile_2} ${_dstn}/.config/
+		done
+	elif [[ "$_install_new" == "false" ]]; then
+		create_ndir
+		for _sfile_1 in "${_skel_1[@]}"; do
+			# install new config file
+			cp -rf ${_src}/${_sfile_1} ${_ndir}/
+		done
+		for _sfile_2 in "${_skel_2[@]}"; do
+			# install new config file
+			cp -rf ${_src}/.config/${_sfile_2} ${_ndir}/.config/
+		done
+	fi
+}
+
+# Update openbox configs
+update_openbox() {
+	local _obskel
+
+	_obskel=('alacritty' 'compton.conf' 'dconf' 'dunst' 'geany' 'nitrogen' 'obmenu-generator' 'openbox' 'picom.conf' 'plank' 'polybar' 'rofi' 'Thunar' 'xfce4')
+	
+	if [[ "$_install_new" == "true" ]]; then
+		create_bdir
+		for _obfile in "${_obskel[@]}"; do
+			# create backup in backup dir
+			mv -f ${_dstn}/.config/${_obfile} ${_bdir}/.config/
+			# install new config file
+			cp -rf ${_src}/.config/${_obfile} ${_dstn}/.config/
+		done
+	elif [[ "$_install_new" == "false" ]]; then
+		create_ndir
+		for _obfile in "${_obskel[@]}"; do
+			# install new config file
+			cp -rf ${_src}/.config/${_obfile} ${_ndir}/.config/
+		done
+	fi
+}
+
+# Update bspwm configs
+update_bspwm() {
+	local _bskel_1
+	local _bskel_2
+	
+	_bskel_1=('.fehbg' '.Xresources' '.Xresources.d' '.xsettingsd')
+	_bskel_2=('bspwm' 'libfm' 'pcmanfm' 'sxhkd')
+		
+	if [[ "$_install_new" == "true" ]]; then
+		create_bdir
+		for _bfile_1 in "${_bskel_1[@]}"; do
+			# create backup in backup dir
+			mv -f ${_dstn}/${_bfile_1} ${_bdir}/
+			# install new config file
+			cp -rf ${_src}/${_bfile_1} ${_dstn}/
+		done
+		for _bfile_2 in "${_bskel_2[@]}"; do
+			# create backup in backup dir
+			mv -f ${_dstn}/.config/${_bfile_2} ${_bdir}/.config/
+			# install new config file
+			cp -rf ${_src}/.config/${_bfile_2} ${_dstn}/.config/
+		done
+	elif [[ "$_install_new" == "false" ]]; then
+		create_ndir
+		for _bfile_1 in "${_bskel_1[@]}"; do
+			# install new config file
+			cp -rf ${_src}/${_bfile_1} ${_ndir}/
+		done
+		for _bfile_2 in "${_bskel_2[@]}"; do
+			# install new config file
+			cp -rf ${_src}/.config/${_bfile_2} ${_ndir}/.config/
+		done
+	fi
+}
+
+# Available options
+run_info() {
+	echo -e ${GREEN}"\n[*] Available options are - \n${BLUE}    --all     ${WHITE}:  ${ORANGE}Update all config files\n${BLUE}    --base    ${WHITE}:  ${ORANGE}Update Base config files\n${BLUE}    --bspwm   ${WHITE}:  ${ORANGE}Update Bspwm config files\n${BLUE}    --openbox ${WHITE}:  ${ORANGE}Update Openbox config files `reset_color`\n"
+	exit 1
+}
+
+# Main
+update_craft() {
+    local hookname="$1"
+
+	case "$hookname" in
+        --all)		ask_user
+					update_skel
+					update_openbox
+					update_bspwm
+					;;
+        --base)		ask_user
+					update_skel
+					;;
+        --openbox)	ask_user
+					update_openbox
+					;;
+        --bspwm)	ask_user
+					update_bspwm
+					;;
+        "")			run_info
+					;;
+        *)			run_info
+					;;
+	esac
+}
+
+# Execute
+if [[ `id -u` == 0 ]]; then
+	echo -e ${BLUE}"\n[!] You're ${RED}not${BLUE} supposed to run this program as ${RED}'root'${BLUE}.`reset_color`\n"	
+else
+	update_craft "$@"
+fi
