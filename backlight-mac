@@ -1,0 +1,13 @@
+#!/usr/bin/bash
+
+# Modified for MacBook Pro mid-2012 from /usr/local/bin/backlight
+# This particular model of MacBook reports 2 devices in /sys/class/backlight.
+# We want to use intel_backlight in combination with macbook-lighter AUR pkg.
+
+CURRENT=`cat /sys/class/backlight/intel_backlight/brightness`
+MAX=`cat /sys/class/backlight/intel_backlight/max_brightness`
+
+PERCENT="$(($CURRENT*100/$MAX))"
+LIGHT=${PERCENT%.*}
+
+echo "$LIGHT"

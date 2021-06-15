@@ -1,0 +1,6 @@
+#!/usr/bin/bash
+
+# Modified for MacBook Pro mid-2012 from /usr/local/bin/backlight-up
+# We are using macbook-lighter AUR pkg here to set brightness.
+
+macbook-lighter-screen --inc 90 && dunstify -u low --replace=69 -i /usr/share/icons/Archcraft/actions/24/whitebalance.svg "Brightness Inc : $(backlight-mac)%"
