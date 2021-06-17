@@ -11,7 +11,7 @@ if ! . "/usr/lib/archcraft/common/ac-include.cfg" 2>/dev/null; then
 fi
 
 # Styles
-styles=(`ls -p --hide={Default.sh,Beach-Bitmap.sh,Forest-Bitmap.sh} $dir`)
+styles=(`ls -p --hide={Default.sh,"*-Bitmap.sh"} $dir`)
 bitmap=(`cd $dir && ls *-Bitmap.sh`)
 
 gen_menu () {
