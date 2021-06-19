@@ -13,9 +13,9 @@ fi
 # notify
 notify_user () {
 	if [[ "$style" == "Light" ]]; then
-		dunstify -u low --replace=699 -i /usr/share/icons/Archcraft/actions/24/view-preview.svg "Saved in ~/Pictures."
+		dunstify -u low --replace=699 -i /usr/share/icons/Archcraft/actions/24/view-preview.svg "Saved in $(xdg-user-dir PICTURES)."
 	else
-		dunstify -u low --replace=699 -i /usr/share/icons/Archcraft-Dark/actions/24/view-preview.svg "Saved in ~/Pictures."
+		dunstify -u low --replace=699 -i /usr/share/icons/Archcraft-Dark/actions/24/view-preview.svg "Saved in $(xdg-user-dir PICTURES)."
 	fi
 }
 
@@ -34,29 +34,29 @@ countdown () {
 
 # take shots
 shotnow () {
-	scrot "$file" -e 'mv $f ~/Pictures ; viewnior ~/Pictures/$f'
+	scrot "$file" -e 'mv $f $$(xdg-user-dir PICTURES) ; viewnior $$(xdg-user-dir PICTURES)/$f'
 	notify_user
 }
 
 shot5 () {
 	countdown '5'
-	sleep 1 && scrot "$file" -e 'mv $f ~/Pictures ; viewnior ~/Pictures/$f'
+	sleep 1 && scrot "$file" -e 'mv $f $$(xdg-user-dir PICTURES) ; viewnior $$(xdg-user-dir PICTURES)/$f'
 	notify_user
 }
 
 shot10 () {
 	countdown '10'
-	sleep 1 && scrot "$file" -e 'mv $f ~/Pictures ; viewnior ~/Pictures/$f'
+	sleep 1 && scrot "$file" -e 'mv $f $$(xdg-user-dir PICTURES) ; viewnior $$(xdg-user-dir PICTURES)/$f'
 	notify_user
 }
 
 shotwin () {
-	scrot -u "$file" -e 'mv $f ~/Pictures ; viewnior ~/Pictures/$f'
+	scrot -u "$file" -e 'mv $f $$(xdg-user-dir PICTURES) ; viewnior $$(xdg-user-dir PICTURES)/$f'
 	notify_user
 }
 
 shotarea () {
-	scrot -s "$file" -e 'mv $f ~/Pictures ; viewnior ~/Pictures/$f'
+	scrot -s "$file" -e 'mv $f $$(xdg-user-dir PICTURES) ; viewnior $$(xdg-user-dir PICTURES)/$f'
 	notify_user
 }
 
